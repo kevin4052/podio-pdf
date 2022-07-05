@@ -1,4 +1,4 @@
-const callPhpSDK = (itemId) => {
+const callPhpClient = (itemId) => {
   return new Promise((resolve, reject) => {
     if (itemId === null) {
       reject('missing podio item ID');
@@ -23,4 +23,4 @@ const callPhpSDK = (itemId) => {
   });
 };
 
-module.exports = { callPhpSDK };
+module.exports = { callPhpClient };
