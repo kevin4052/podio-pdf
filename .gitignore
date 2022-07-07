@@ -5,6 +5,7 @@ vendor
 composer.lock
 
 .env
+docs
 
 cert.pem
 key.pem

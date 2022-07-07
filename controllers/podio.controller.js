@@ -1,25 +1,31 @@
 const { callPhpClient } = require('./podioClient.helper');
 const pdfService = require('../services/pdf.services');
+const path = require('path');
+const fs = require('fs');
 
 const getRoot = (req, res) => {
   res.send('no access');
 };
 
-const getItembyID = async (req, res) => {
-  const { itemId } = req.params;
-  const stream = res.writeHead(200, {
-    'Content-Type': 'application/pdf',
-    'Content-Disposition': `attachment;filename=form-test.pdf`,
-  });
+const getItembyID = async (req, res, next) => {
+  //   const { itemId } = req.params;
+  const { itemId, formName } = req.body;
 
-  //   try {
-  //     const podioItem = await callPhpClient(itemId);
-  //     const data = JSON.parse(podioItem);
-  //     res.status(200).json(data);
-  //   } catch (error) {
-  //     console.error(error);
-  //     res.status(404).json({ errorMessage: 'api call failed' });
-  //   }
+  console.log(req.body);
+
+  try {
+    const podioItem = await callPhpClient(itemId);
+    const data = JSON.parse(podioItem);
+    data.itemId = itemId;
+    data.formName = formName;
+    console.log(data);
+    const fileName = await pdfService.createPdf(data);
+    const filePath = `/home/kevinhdz/dev/podio-pdf/docs/${fileName}`;
+    res.download(filePath, `${data.category[0].text}.pdf`);
+  } catch (error) {
+    console.error(error);
+    res.status(404).json({ errorMessage: 'api call failed' });
+  }
 };
 
 module.exports = {
