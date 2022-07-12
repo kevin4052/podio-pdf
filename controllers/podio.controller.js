@@ -7,8 +7,7 @@ const getRoot = (req, res) => {
   res.send('no access');
 };
 
-const getItembyID = async (req, res, next) => {
-  //   const { itemId } = req.params;
+const getItembyID = async (req, res) => {
   const { itemId, formName } = req.body;
 
   console.log(req.body);
